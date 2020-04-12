@@ -1,5 +1,6 @@
 //https://www.youtube.com/watch?v=Yw-SYSG-028
 //https://github.com/bradtraversy/wordbeater/tree/master/dist
+// another versoin https://www.geeksforgeeks.org/design-a-typing-speed-test-game-using-javascript/
 
 //how to connect to github https://www.youtube.com/watch?v=yhlArNbzWgE
 
@@ -22,6 +23,7 @@ const currentLevel = levels.medium;  //aquí se llama la constante como  un obje
 let time = currentLevel;
 let score = 0;
 let isPlaying;
+let isTyping;
 
 //DOm elements
 const wordInput = document.querySelector('#word-input');
@@ -30,6 +32,10 @@ const scoreDisplay = document.querySelector('#score');
 const timeDisplay = document.querySelector('#time');
 const message = document.querySelector('#message');
 const seconds = document.querySelector('#seconds');
+
+var wordStartTimeS;
+var wordEndTimeS;
+var wordTime;
 
 const words = [
     'speakers',
@@ -44,17 +50,55 @@ const words = [
 //Initialize Game
 function init() {
     console.log('init');
+    isPlaying = false;
 
     //load word from array
     showWord(words);
     //start matching on word input 
-    wordInput.addEventListener('input', startMatch)
+    wordInput.addEventListener('input', startWord);
+    wordInput.addEventListener("keydown", checkKeyPressed, false);
 
     // call countdown every second
     setInterval(countdown, 1000);
     //check game status
     setInterval(checkStatus, 50);
 }
+
+function checkKeyPressed(e) {
+    if (e.keyCode === 32) {
+        endWord();      
+    }
+}
+
+//end typing, reinicilized isTyping and calculates wordSpeedP
+function endWord() {
+
+    // alert("The 'spacebar' key is pressed, resetting word count") //>> shows a popup message 
+    isTyping = false;
+    console.log("The 'spacebar' key is pressed, resetting word count");
+    wordEndTimeS = Date.now();
+    wordTime = wordEndTimeS - wordStartTimeS // 
+    console.log('the word has ended, and in took %s to type', wordTime);
+
+}
+
+//start typing
+function startWord() {
+    console.log('typing...., isTyping Value is %s', isTyping); //check if code receives input
+
+    if (!isTyping) {
+        isTyping = true;
+        wordStartTimeS = Date.now();
+        console.log('a new word is being written, starting at %s', new Date(wordStartTimeS)); //log word start time
+
+    } else {
+        // do something with keystrokes in the middle of word typing, write data to table? compare char by char?
+
+    }
+
+}
+
+
 
 //start match
 function startMatch() {
@@ -69,7 +113,7 @@ function startMatch() {
         score++;
     }
     //if score is -1, display 0
-    if(score === -1){
+    if (score === -1) {
         scoreDisplay.innerHTML = 0;
     } else {
         scoreDisplay.innerHTML = score;
@@ -96,6 +140,8 @@ function showWord(words) {
 
     //output random word
     currentWord.innerHTML = words[randIndex];
+    getWordLength(currentWord.innerHTML)
+
 }
 
 //countdown timer
@@ -119,7 +165,17 @@ function checkStatus() {
         score = -1;
 
     }
+}
 
+//read word length (characters)
+function getWordLength(word) {
+    console.log("Word has %s characters", word.length);
+    return word.length;
+
+}
+
+//get the timelog for each keystroke
+function getCharSpeed() {
 
 
 }
