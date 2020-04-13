@@ -6,7 +6,7 @@
 
 window.addEventListener('load', init);
 
-// Globals 
+// Globals test
 
 
 //available levels 
@@ -80,6 +80,7 @@ function endWord() {
     wordTime = wordEndTimeS - wordStartTimeS // 
     console.log('the word has ended, and took %s [s] to type', wordTime / 1000);
     startMatch();
+    //push word, word.length and wordTime into an array (and later to a table)
 
 }
 
@@ -103,7 +104,6 @@ function startWord() {
 
 //start match
 function startMatch() {
-    console.log('typing....') //check if code receives input
 
     if (matchWords()) {
         console.log('match!!');
