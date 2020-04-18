@@ -6,7 +6,7 @@
 
 window.addEventListener('load', init);
 
-// Globals 
+// Globals testpc
 
 
 //available levels 
@@ -36,6 +36,7 @@ const seconds = document.querySelector('#seconds');
 var wordStartTimeS;
 var wordEndTimeS;
 var wordTime;
+var typed_char
 
 const words = [
     'speakers',
@@ -51,43 +52,45 @@ const words = [
 function init() {
     console.log('init');
     isPlaying = false;
-
+    typed_char = 0
     //load word from array
     showWord(words);
     //start matching on word input 
-    wordInput.addEventListener('input', startWord);
-    wordInput.addEventListener("keydown", checkKeyPressed, false);
+    wordInput.addEventListener('keydown', startWord);
+    wordInput.addEventListener('keydown', checkKeyPressed, false);
 
     // call countdown every second
     setInterval(countdown, 1000);
     //check game status
     setInterval(checkStatus, 50);
 }
-
+//if spacebar is pressed endWord
 function checkKeyPressed(e) {
+    //32 spacebar
     if (e.keyCode === 32) {
-        endWord();      
+        //endWord(); //changed endWord behavior
     }
-}
-
-//end typing, reinicilized isTyping and calculates wordSpeedP
-function endWord() {
-
-    // alert("The 'spacebar' key is pressed, resetting word count") //>> shows a popup message 
-    isTyping = false;
-    console.log("The 'spacebar' key is pressed, resetting word count");
-    wordEndTimeS = Date.now();
-    wordTime = wordEndTimeS - wordStartTimeS // 
-    console.log('the word has ended, and in took %s to type', wordTime);
-
+    //8 backspace
+    else if (e.keyCode === 8) {
+        //endWord(); //changed endWord behavior
+        console.log("backspace hit, decreasing typed_char");
+        if (typed_char === 0) {
+            //do nothing
+        } else {
+            typed_char--;
+        }
+    } else {
+        trackTypedChars();
+    }
+    console.log("%s chars typed and the target is %s ", typed_char, word_length);
 }
 
 //start typing
 function startWord() {
-    console.log('typing...., isTyping Value is %s', isTyping); //check if code receives input
 
     if (!isTyping) {
         isTyping = true;
+        typed_char = 0
         wordStartTimeS = Date.now();
         console.log('a new word is being written, starting at %s', new Date(wordStartTimeS)); //log word start time
 
@@ -95,8 +98,21 @@ function startWord() {
         // do something with keystrokes in the middle of word typing, write data to table? compare char by char?
 
     }
+    console.log('typing...., isTyping Value is %s', isTyping); //check if code receives input
 
 }
+//end typing, reinicilized isTyping and calculates wordSpeedP
+function endWord() {
+
+    // alert("The 'spacebar' key is pressed, resetting word count") //>> shows a popup message 
+    isTyping = false;
+    console.log("endWord event reached, resetting word count");
+    wordEndTimeS = Date.now();
+    wordTime = wordEndTimeS - wordStartTimeS // 
+    console.log('the word has ended, and in took %s to type', wordTime);
+
+}
+
 
 
 
@@ -140,7 +156,7 @@ function showWord(words) {
 
     //output random word
     currentWord.innerHTML = words[randIndex];
-    getWordLength(currentWord.innerHTML)
+    getWordLength(currentWord.innerHTML);
 
 }
 
@@ -173,6 +189,21 @@ function getWordLength(word) {
     return word.length;
 
 }
+
+//check how many chars have been pressed and check target word length
+function trackTypedChars() {
+    if (isTyping) {
+        word = currentWord.innerHTML
+        typed_char++;
+        word_length = getWordLength(currentWord.innerHTML);
+        if (typed_char === word_length) {
+            endWord();
+        }
+    }
+
+
+}
+
 
 //get the timelog for each keystroke
 function getCharSpeed() {
