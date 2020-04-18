@@ -6,7 +6,7 @@
 
 window.addEventListener('load', init);
 
-// Globals testpc
+// Globals test
 
 
 //available levels 
