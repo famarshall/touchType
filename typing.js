@@ -11,13 +11,13 @@ window.addEventListener('load', init);
 
 //available levels 
 const levels = {
-    easy: 5,
+    easy: 20,
     medium: 3,
     hard: 2
 }
 
 //to change level
-const currentLevel = levels.medium;  //aquí se llama la constante como  un objeto 
+const currentLevel = levels.easy;  //aquí se llama la constante como  un objeto 
 
 
 let time = currentLevel;
@@ -25,7 +25,7 @@ let score = 0;
 let isPlaying;
 let isTyping;
 
-//DOm elements
+//Dom elements
 const wordInput = document.querySelector('#word-input');
 const currentWord = document.querySelector('#current-word');
 const scoreDisplay = document.querySelector('#score');
@@ -93,7 +93,7 @@ function startWord() {
         typed_char = 0
         wordStartTimeS = Date.now();
         console.log('a new word is being written, starting at %s', new Date(wordStartTimeS)); //log word start time
-
+        
     } else {
         // do something with keystrokes in the middle of word typing, write data to table? compare char by char?
 
@@ -118,7 +118,6 @@ function endWord() {
 
 //start match
 function startMatch() {
-    console.log('typing....') //check if code receives input
 
     if (matchWords()) {
         console.log('match!!');
