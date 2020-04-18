@@ -6,7 +6,7 @@
 
 window.addEventListener('load', init);
 
-// Globals test
+// Globals testbgoode
 
 
 //available levels 
