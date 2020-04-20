@@ -56,8 +56,8 @@ function init() {
     //load word from array
     showWord(words);
     //start matching on word input 
-    wordInput.addEventListener('keydown', startWord);
-    wordInput.addEventListener('keydown', checkKeyPressed, false);
+    wordInput.addEventListener('keyup', startWord);
+    wordInput.addEventListener('keyup', checkKeyPressed, false);
 
     // call countdown every second
     setInterval(countdown, 1000);
@@ -68,11 +68,11 @@ function init() {
 function checkKeyPressed(e) {
     //32 spacebar
     if (e.keyCode === 32) {
-        //endWord(); //changed endWord behavior
+       
     }
     //8 backspace
     else if (e.keyCode === 8) {
-        //endWord(); //changed endWord behavior
+        
         console.log("backspace hit, decreasing typed_char");
         if (typed_char === 0) {
             //do nothing
@@ -82,10 +82,20 @@ function checkKeyPressed(e) {
     } else {
         trackTypedChars();
     }
+    
+    if(typed_char===word_length){
+        
+        if (matchWords()) {
+            console.log('match!!');
+            endWord();
+        }
+    }
     console.log("%s chars typed and the target is %s ", typed_char, word_length);
+
+    
 }
 
-//start typing
+//start 
 function startWord() {
 
     if (!isTyping) {
@@ -93,7 +103,7 @@ function startWord() {
         typed_char = 0
         wordStartTimeS = Date.now();
         console.log('a new word is being written, starting at %s', new Date(wordStartTimeS)); //log word start time
-        
+
     } else {
         // do something with keystrokes in the middle of word typing, write data to table? compare char by char?
 
@@ -109,8 +119,16 @@ function endWord() {
     console.log("endWord event reached, resetting word count");
     wordEndTimeS = Date.now();
     wordTime = wordEndTimeS - wordStartTimeS // 
-    console.log('the word has ended, and in took %s to type', wordTime);
+    console.log('the word has ended, and it took %s to type', wordTime);
+    if (matchWords()) {
+        console.log('match!!');
+        isPlaying = true;
+        time = currentLevel + 1;
+        showWord(words);
+        wordInput.value = '';
+        score++;
 
+    }
 }
 
 
@@ -196,6 +214,7 @@ function trackTypedChars() {
         typed_char++;
         word_length = getWordLength(currentWord.innerHTML);
         if (typed_char === word_length) {
+            console.log("BLIPBLA")
             endWord();
         }
     }
