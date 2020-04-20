@@ -39,13 +39,13 @@ var wordTime;
 var typed_char
 
 const words = [
-    'speakers',
-    'teta',
-    'seno',
-    'hola',
-    'desde',
-    'pirula',
-    'chapalapachala'
+    'vamos a ver',
+    'desde que te vi',
+    'hola, cómo estás?',
+    'hola amigo',
+    'es muy importante',
+    'taringa la minga',
+    'chalita si'
 ];
 
 //Initialize Game
@@ -217,10 +217,13 @@ function trackTypedChars() {
             console.log("BLIPBLA")
             endWord();
         }
+        //check is typing has error:: compare input with word and see if they match (itsa match?)
     }
 
 
 }
+
+
 
 
 //get the timelog for each keystroke
