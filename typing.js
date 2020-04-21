@@ -36,7 +36,8 @@ const seconds = document.querySelector('#seconds');
 var wordStartTimeS;
 var wordEndTimeS;
 var wordTime;
-var typed_char
+var typed_char;
+var backspaces;
 
 const words = [
     'vamos a ver',
@@ -45,7 +46,7 @@ const words = [
     'hola amigo',
     'es muy importante',
     'taringa la minga',
-    'chalita si'
+    'pero probablemente'
 ];
 
 //Initialize Game
@@ -66,12 +67,15 @@ function init() {
 }
 //if spacebar is pressed endWord
 function checkKeyPressed(e) {
+   
     //32 spacebar
-    if (e.keyCode === 32) {
-       
-    }
+   /* if (e.keyCode === 32) {
+       //do something with spacebar 
+    }*/
+
     //8 backspace
-    else if (e.keyCode === 8) {
+    if (e.keyCode === 8) {
+        backspaces++;
         
         console.log("backspace hit, decreasing typed_char");
         if (typed_char === 0) {
@@ -91,35 +95,34 @@ function checkKeyPressed(e) {
         }
     }
     console.log("%s chars typed and the target is %s ", typed_char, word_length);
-
+    
     
 }
 
 //start 
 function startWord() {
-
+    
     if (!isTyping) {
         isTyping = true;
         typed_char = 0
+        backspaces = 0;
+        word = currentWord.innerHTML
         wordStartTimeS = Date.now();
         console.log('a new word is being written, starting at %s', new Date(wordStartTimeS)); //log word start time
+        console.log("Word has %s characters", word.length);
 
     } else {
         // do something with keystrokes in the middle of word typing, write data to table? compare char by char?
 
     }
-    console.log('typing...., isTyping Value is %s', isTyping); //check if code receives input
+
 
 }
 //end typing, reinicilized isTyping and calculates wordSpeedP
 function endWord() {
-
+    
     // alert("The 'spacebar' key is pressed, resetting word count") //>> shows a popup message 
     isTyping = false;
-    console.log("endWord event reached, resetting word count");
-    wordEndTimeS = Date.now();
-    wordTime = wordEndTimeS - wordStartTimeS // 
-    console.log('the word has ended, and it took %s to type', wordTime);
     if (matchWords()) {
         console.log('match!!');
         isPlaying = true;
@@ -127,11 +130,24 @@ function endWord() {
         showWord(words);
         wordInput.value = '';
         score++;
-
+        
+    } else { //if no match
+        console.log('no match, bad typing');
+        isPlaying = true;
+        time = currentLevel + 1;
+        showWord(words);
+        wordInput.value = '';
+        score++;
+        
     }
+    word = currentWord.innerHTML
+    wordEndTimeS = Date.now();
+    wordTime = wordEndTimeS - wordStartTimeS; // 
+    var cpm = (word.length/(wordTime/1000))*60;
+    var wpm = cpm/5;
+    console.log("endWord event reached, resetting word count");
+    console.log('the word has ended, and it took %s to type; CPM: %s , WPM: %s', wordTime,cpm,wpm);
 }
-
-
 
 
 //start match
@@ -155,6 +171,19 @@ function startMatch() {
 
 //matchcurrentWord to wordInput
 function matchWords() {
+    console.log(wordInput.value);
+    if (wordInput.value === currentWord.innerHTML) {
+        message.innerHTML = 'Correct!!!';
+        return true;
+    }
+    else {
+        message.innerHTML = '';
+        return false;
+    }
+}
+
+//matchcurrentWord to wordInput
+function matchTyping(typed_char) {
     console.log(wordInput.value);
     if (wordInput.value === currentWord.innerHTML) {
         message.innerHTML = 'Correct!!!';
@@ -202,7 +231,6 @@ function checkStatus() {
 
 //read word length (characters)
 function getWordLength(word) {
-    console.log("Word has %s characters", word.length);
     return word.length;
 
 }
@@ -212,9 +240,10 @@ function trackTypedChars() {
     if (isTyping) {
         word = currentWord.innerHTML
         typed_char++;
+        
         word_length = getWordLength(currentWord.innerHTML);
         if (typed_char === word_length) {
-            console.log("BLIPBLA")
+            console.log("Beeep")
             endWord();
         }
         //check is typing has error:: compare input with word and see if they match (itsa match?)
