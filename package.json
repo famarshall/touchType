@@ -1,0 +1,22 @@
+{
+  "name": "touchtype",
+  "version": "1.0.0",
+  "description": "This is a test app for Typing Training",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/famarshall/touchType.git"
+  },
+  "author": "Francisco Marshall",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/famarshall/touchType/issues"
+  },
+  "homepage": "https://github.com/famarshall/touchType#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}

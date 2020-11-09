@@ -36,7 +36,13 @@ const seconds = document.querySelector('#seconds');
 var wordStartTimeS;
 var wordEndTimeS;
 var wordTime;
-var typed_char;
+
+var typed_char; // not sure
+var charList; //char count and speed for each word, resets every new word
+var charStartTimeS;
+var charEndTimeS;
+
+
 var backspaces;
 
 const words = [
@@ -101,9 +107,10 @@ function checkKeyPressed(e) {
 
 //start 
 function startWord() {
-    
+
     if (!isTyping) {
         isTyping = true;
+        charList = [] //charList Declaration
         typed_char = 0
         backspaces = 0;
         word = currentWord.innerHTML
@@ -246,17 +253,37 @@ function trackTypedChars() {
             console.log("Beeep")
             endWord();
         }
-        //check is typing has error:: compare input with word and see if they match (itsa match?)
+        //check is typing has error:: compare input with word and see if they match (it'ws a match?)
     }
-
-
 }
 
 
 
-
 //get the timelog for each keystroke
-function getCharSpeed() {
+function logCharData(typedCharValue,char_timestamp) {
+    // if charList is empty , then speed is 0
+    //
+    charNum=charList.length
+    if(charNum==0){
+        thisChar['letter']=typedCharValue,
+        thisChar['start_time']=char_timestamp
+        thisChar['speed']=0
+    }
+    else{
+        thisChar['letter']=typedCharValue,
+        thisChar['start_time']=char_timestamp
+        thisChar['speed']=char_timestamp - charList['start_time'][charNum-2]
+    }
+    charList.append(thisChar);
+    
+    //charTimeS
+    // charList=[[letter:'h' , start_time='0:00:00', speed:'0'], // first letter 0 speed
+         //      [letter:'o' , start_time='0:00:02', speed:'1 ms'], // compare to letter[n-1]
+         //      [letter:'l' , start_time='0:00:06', speed:'4 ms'], // compare to letter[n-1] 06-02= 4 ms
+         //      [letter:'a' , start_time='0:00:01', speed:'1 ms'], // 
+//               ]
+// database schema:
+//https://docs.google.com/spreadsheets/d/1KJhmPioONOOl3WezJS4hmPYN3to7MGh3-tNZ8MCqrtM/edit#gid=0
 
 
 }
